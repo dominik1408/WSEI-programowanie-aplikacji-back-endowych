@@ -35,7 +35,7 @@ namespace ExerciseLAB3.Controllers
 
             if (user == null)
             {
-                return NotFound("User don't exist");
+                return NotFound("User doesn't exist");
             }
             return Ok(user);
 
@@ -55,8 +55,59 @@ namespace ExerciseLAB3.Controllers
             await _context.SaveChangesAsync();
 
             return CreatedAtAction(
-            nameof(GetUser), new {id = user.id},
+            nameof(GetUser), new { id = user.id },
             newUser);
+        }
+
+        //PUT: api/users/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, User user)
+        {
+            if (id != user.id)
+            {
+                return BadRequest("User doesn't exist");
+            }
+
+            var someUser = await _context.Users.FindAsync(id);
+            if (someUser == null)
+            {
+                return NotFound("User doesn't exist"); ;
+            }
+
+            someUser.name = user.name;
+            someUser.email = user.email;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException) when (!UserExist(id))
+            {
+                return NotFound("User doesn't exist");
+            }
+
+            return Ok(someUser);
+        }
+
+        //DELETE: api/user/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+            if(user == null)
+            {
+                return NotFound("User doesn't exist");
+            }
+
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        private bool UserExist(int id)
+        {
+            return _context.Users.Any(a => a.id == id);
         }
     }
 }
