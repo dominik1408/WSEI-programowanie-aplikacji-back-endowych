@@ -14,6 +14,20 @@ namespace CarSharingApp.Data
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<Color> Colors { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Car>()
+                .HasOne(a => a.CarBrand)
+                .WithMany(b => b.Car)
+                .HasForeignKey(a => a.CarBrandId);
+            modelBuilder.Entity<Car>()
+                .HasOne(a => a.CarModel)
+                .WithMany(b => b.Car)
+                .HasForeignKey(a => a.CarModelId);
+            modelBuilder.Entity<Car>()
+                .HasOne(a => a.Color)
+                .WithMany(b => b.Car)
+                .HasForeignKey(a => a.ColorId);
+        }
     }
 }

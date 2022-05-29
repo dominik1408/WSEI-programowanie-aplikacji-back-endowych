@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace CarSharingApp.Models
 {
@@ -18,14 +20,20 @@ namespace CarSharingApp.Models
         [ForeignKey("CarBrand")]
         [Required]
         public int CarBrandId { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public CarBrand CarBrand { get; set; }
         [ForeignKey("CarModel")]
         [Required]
         public int CarModelId { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public CarModel CarModel { get; set; }
         [ForeignKey("Color")]
         [Required]
         public int ColorId { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
         public Color Color { get; set; }
     }
 }
