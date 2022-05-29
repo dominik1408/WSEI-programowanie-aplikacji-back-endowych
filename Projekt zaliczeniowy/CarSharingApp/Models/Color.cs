@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
@@ -9,10 +10,11 @@ namespace CarSharingApp.Models
         [Key]
         public int ColorId { get; set; }
         [Required]
+        [Column(TypeName = "varchar(100)")]
         public string ColorName { get; set; }
 
         [JsonIgnore]
         [IgnoreDataMember]
-        public ICollection<Car> Car { get; set; }
+        public ICollection<Car>? Car { get; set; }
     }
 }

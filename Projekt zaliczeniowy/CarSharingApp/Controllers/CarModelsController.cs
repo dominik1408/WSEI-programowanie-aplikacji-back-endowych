@@ -70,13 +70,13 @@ namespace CarSharingApp.Controllers
         {
             if(id != carModel.CarModelId)
             {
-                return BadRequest();
+                return BadRequest("This model not exist");
             }
 
             var model = await _context.CarModels.FindAsync(id);
             if(model == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Element not found" });
             }
 
             model.Name = carModel.Name;

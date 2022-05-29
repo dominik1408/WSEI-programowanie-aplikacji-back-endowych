@@ -46,7 +46,7 @@ namespace CarSharingApp.Controllers
 
             return CreatedAtAction(nameof(GetColors),
                 new { id = colorModel.ColorId },
-                colorModel);
+                color);
         }
 
         [HttpDelete("{id}")]

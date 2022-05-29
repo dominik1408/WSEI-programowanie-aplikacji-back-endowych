@@ -55,7 +55,7 @@ namespace CarSharingApp.Controllers
 
             return CreatedAtAction(nameof(GetCars), 
                 new {id = carModel.CarId},
-                carModel);
+                car);
         }
 
         [HttpDelete("{id}")]

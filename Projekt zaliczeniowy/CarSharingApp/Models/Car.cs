@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using CarSharingApp.Validation;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
@@ -10,6 +11,8 @@ namespace CarSharingApp.Models
         [Key]
         public int CarId { get; set; }
         [Required]
+        [CarValidation]
+        [Column(TypeName = "nvarchar(7)")]
         public string RegistrationNumber { get; set; }
         [Required]
         public double MeterStatus { get; set; }
