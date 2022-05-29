@@ -44,7 +44,9 @@ namespace CarSharingApp.Controllers
             _context.CarModels.Add(model);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCarModel), new { id = carModel.CarModelId });
+            return CreatedAtAction(nameof(GetCarModel),
+                new { id = model.CarModelId },
+                model);
 
         }
 

@@ -45,7 +45,9 @@ namespace CarSharingApp.Controllers
             _context.CarBrands.Add(carBrandModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetCarBrand), new {id = carBrandModel.CarBrandId});
+            return CreatedAtAction(nameof(GetCarBrand),
+                new {id = carBrandModel.CarBrandId},
+                carBrandModel);
         }
 
         [HttpDelete("{id}")]

@@ -14,5 +14,6 @@ namespace CarSharingApp.Data
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<Color> Colors { get; set; }
 
+
     }
 }

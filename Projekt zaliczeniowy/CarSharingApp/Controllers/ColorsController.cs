@@ -44,7 +44,9 @@ namespace CarSharingApp.Controllers
             _context.Colors.Add(colorModel);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetColors), new { id = colorModel.ColorId });
+            return CreatedAtAction(nameof(GetColors),
+                new { id = colorModel.ColorId },
+                colorModel);
         }
 
         [HttpDelete("{id}")]
