@@ -25,18 +25,22 @@ namespace CarSharingApp.Models
         public int CarBrandId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-        public CarBrand CarBrand { get; set; }
+        public CarBrand? CarBrand { get; set; }
         [ForeignKey("CarModel")]
         [Required]
         public int CarModelId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-        public CarModel CarModel { get; set; }
+        public CarModel? CarModel { get; set; }
         [ForeignKey("Color")]
         [Required]
         public int ColorId { get; set; }
         [JsonIgnore]
         [IgnoreDataMember]
-        public Color Color { get; set; }
+        public Color? Color { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public ICollection<Loan>? Loan { get; set; }
     }
 }

@@ -1,5 +1,8 @@
 ﻿using CarSharingApp.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace CarSharingApp.Models
 {
@@ -8,13 +11,31 @@ namespace CarSharingApp.Models
         [Key]
         public int UserId { get; set; }
         [Required]
+        [Column(TypeName = "varchar(100)")]
         public string Name { get; set; }
+        [Required]
+        [Column(TypeName = "varchar(100)")]
         public string Surname { get; set; }
+        [Required]
+        [Column(TypeName = "varchar(50)")]
         public string Login { get; set; }
+        [Required]
+        [Column (TypeName = "varchar(50)")]
         public string Password { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
-        public int PhoneNumber { get; set; } 
+        [Required]
+        public int PhoneNumber { get; set; }
+        [Required]
         public Roles Roles { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public ICollection<Loan>? Loan { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public Admin? Admin { get; set; }
 
     }
 }

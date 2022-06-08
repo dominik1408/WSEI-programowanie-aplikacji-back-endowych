@@ -13,6 +13,11 @@ namespace CarSharingApp.Data
         public DbSet<CarBrand> CarBrands { get; set; }
         public DbSet<CarModel> CarModels { get; set; }
         public DbSet<Color> Colors { get; set; }
+        public DbSet<Admin> Admins { get; set; }
+        public DbSet<Loan> Loans { get; set; }
+        public DbSet<LoanType> LoanTypes { get; set; }
+        public DbSet<User> Users { get; set; }   
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -28,6 +33,26 @@ namespace CarSharingApp.Data
                 .HasOne(a => a.Color)
                 .WithMany(b => b.Car)
                 .HasForeignKey(a => a.ColorId);
+            modelBuilder.Entity<Loan>()
+                .HasOne(a => a.LoanType)
+                .WithMany(b => b.Loan)
+                .HasForeignKey(a => a.LoanTypeId);
+            modelBuilder.Entity<Loan>()
+                .HasOne(a => a.Car)
+                .WithMany(b => b.Loan)
+                .HasForeignKey(a => a.CarId);
+            modelBuilder.Entity<Loan>()
+                .HasOne(a => a.User)
+                .WithMany(b => b.Loan)
+                .HasForeignKey(a => a.UserId);
+            modelBuilder.Entity<User>()
+                .HasOne(a => a.Admin)
+                .WithOne(b => b.User)
+                .HasForeignKey<Admin>(b => b.UserId);
+            modelBuilder.Entity<User>()
+                .Property(a => a.Roles)
+                .HasConversion<string>()
+                .HasMaxLength(20);
         }
     }
 }
