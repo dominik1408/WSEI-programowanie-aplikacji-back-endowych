@@ -1,0 +1,9 @@
+1. Utworzenie i konfiguracja projektu
+2. Utworzenie bazy danych w MSSM Studio 2018
+3. Utworzenie modeli 
+4. Utworzenie enuma z rolami użytkowników
+5. Dodanie klasy AppDbContext do reprezentacji tabel
+6. Utworzenie relacji między modelami w metodzie OnModelCreating w klasie AppDbContext
+7. Migracja modeli do bazy danych
+8. Utworzenie Kontrollerów z metodami GET, POST, PUT, DELETE
+9. Dodanie walidacji dla numeru rejestracyjnego w tabeli Cars - nr rejestracyjny musi być unikatowy 
