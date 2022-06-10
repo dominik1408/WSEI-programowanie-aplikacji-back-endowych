@@ -26,7 +26,11 @@ namespace CarSharingApp.Models
         [IgnoreDataMember]
         public User? User { get; set; }  
         [Required]
+        [ForeignKey("Admin")]
         public int AdminId { get; set; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public Admin? Admin { get; set; }
         [Required]
         [ForeignKey("LoanType")]
         public int LoanTypeId { get; set; }

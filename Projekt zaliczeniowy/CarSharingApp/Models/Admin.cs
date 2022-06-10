@@ -13,5 +13,9 @@ namespace CarSharingApp.Models
         [JsonIgnore]
         [IgnoreDataMember]
         public User? User { get; set; }
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+        public ICollection<Loan>? Loan { get; set; }
     }
 }
