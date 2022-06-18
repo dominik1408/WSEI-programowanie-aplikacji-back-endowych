@@ -17,9 +17,28 @@ namespace CarSharingApp.Controllers
 
         //GET: api/cars
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public Task<ActionResult<IEnumerable<Car>>> GetCars()
         {
-            return await _context.Cars.ToListAsync();
+            var cars = (from car in _context.Cars
+                        join carBrand in _context.CarBrands
+                        on car.CarBrandId equals carBrand.CarBrandId
+                        join carModel in _context.CarModels
+                        on car.CarModelId equals carModel.CarModelId
+                        join color in _context.Colors
+                        on car.ColorId equals color.ColorId
+                        select new
+                        {
+                            CarId = car.CarId,
+                            RegistrationNumber = car.RegistrationNumber,
+                            MeterStatus = car.MeterStatus,
+                            ProductionYear = car.ProductionYear,
+                            IsActive = car.IsActive,
+                            CarBrand = carBrand.Name,
+                            CarModel = carModel.Name,
+                            ColorName = color.ColorName
+                        }).ToList();
+
+            return Json(cars);
         }
         
         //GET: api/cars/1
