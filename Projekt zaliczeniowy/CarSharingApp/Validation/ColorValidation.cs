@@ -2,23 +2,23 @@
 
 namespace CarSharingApp.Validation
 {
-    public class CarValidation : ValidationAttribute
+    public class ColorValidation : ValidationAttribute
     {
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var _context = (AppDbContext)validationContext.GetService(typeof(AppDbContext));
-            var entity = _context.Cars.SingleOrDefault(a => a.RegistrationNumber == value.ToString());
+            var enitiy = _context.Colors.SingleOrDefault(a => a.ColorName == value.ToString());
 
-            if (entity != null)
+            if (enitiy != null)
             {
                 return new ValidationResult(GetErrorMessage(value.ToString()));
             }
             return ValidationResult.Success;
-            
         }
-        public string GetErrorMessage(string RegistrationNumber)
+        public string GetErrorMessage(string Color)
         {
-            return $"{RegistrationNumber} is already in use.";
+            return $"{Color} already exist in database.";
         }
+
     }
 }
