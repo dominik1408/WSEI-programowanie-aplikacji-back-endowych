@@ -7,8 +7,8 @@ namespace CarSharingApp.Validation
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             var _context = (AppDbContext)validationContext.GetService(typeof(AppDbContext));
-            var entity = _context.Users.SingleOrDefaultAsync(a => a.Email == value.ToString());
-            if(entity == null)
+            var entity = _context.Users.SingleOrDefault(a => a.Email == value.ToString());
+            if(entity != null)
             {
                 return new ValidationResult(GetErrorMesage(value.ToString()));
             }
