@@ -1,4 +1,5 @@
 ﻿using CarSharingApp.Enums;
+using CarSharingApp.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
@@ -17,12 +18,14 @@ namespace CarSharingApp.Models
         [Column(TypeName = "varchar(100)")]
         public string Surname { get; set; }
         [Required]
+        [LoginValidation]
         [Column(TypeName = "varchar(50)")]
         public string Login { get; set; }
         [Required]
         [Column (TypeName = "varchar(50)")]
         public string Password { get; set; }
         [Required]
+        [EmailValidation]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
         [Required]
