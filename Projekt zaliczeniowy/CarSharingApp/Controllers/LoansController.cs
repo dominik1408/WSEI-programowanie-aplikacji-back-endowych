@@ -86,11 +86,13 @@ namespace CarSharingApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Loan>> PostLoan(Loan loan)
         {
-          if (_context.Loans == null)
-          {
-              return Problem("Entity set 'AppDbContext.Loans'  is null.");
-          }
+            if (_context.Loans == null)
+            {
+                return Problem("Entity set 'AppDbContext.Loans'  is null.");
+            }
+  
             _context.Loans.Add(loan);
+            await _context.Cars.Where(a => a.CarId == loan.CarId).ForEachAsync(a => a.IsActive = false);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetLoan", new { id = loan.LoanId }, loan);
@@ -110,6 +112,7 @@ namespace CarSharingApp.Controllers
                 return NotFound();
             }
 
+            _context.Cars.Where(a => a.CarId == loan.CarId).ForEachAsync(a => a.IsActive=true);
             _context.Loans.Remove(loan);
             await _context.SaveChangesAsync();
 

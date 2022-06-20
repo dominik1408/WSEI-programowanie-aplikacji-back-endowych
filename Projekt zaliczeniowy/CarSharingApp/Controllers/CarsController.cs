@@ -1,12 +1,13 @@
-﻿using CarSharingApp.Models;
-using Microsoft.AspNetCore.Http;
+﻿
+using CarSharingApp.Models;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CarSharingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarsController : ControllerBase
+    public class CarsController : Controller
     {
         private readonly AppDbContext _context;
 
@@ -17,28 +18,9 @@ namespace CarSharingApp.Controllers
 
         //GET: api/cars
         [HttpGet]
-        public Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
         {
-            var cars = (from car in _context.Cars
-                        join carBrand in _context.CarBrands
-                        on car.CarBrandId equals carBrand.CarBrandId
-                        join carModel in _context.CarModels
-                        on car.CarModelId equals carModel.CarModelId
-                        join color in _context.Colors
-                        on car.ColorId equals color.ColorId
-                        select new
-                        {
-                            CarId = car.CarId,
-                            RegistrationNumber = car.RegistrationNumber,
-                            MeterStatus = car.MeterStatus,
-                            ProductionYear = car.ProductionYear,
-                            IsActive = car.IsActive,
-                            CarBrand = carBrand.Name,
-                            CarModel = carModel.Name,
-                            ColorName = color.ColorName
-                        }).ToList();
-
-            return Json(cars);
+          return await _context.Cars.ToListAsync();
         }
         
         //GET: api/cars/1
@@ -92,40 +74,21 @@ namespace CarSharingApp.Controllers
 
             return NoContent();
          }
-
-        [HttpPut]
-        public async Task<IActionResult> PutCar(Car car ,int id)
+        
+        //PATCH: api/cars/id
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateCarsPatch(int id, [FromBody] JsonPatchDocument<Car> car)
         {
-            if( id != car.CarId)
-            {
-                return BadRequest();
-            }
-
-            var carModel = await _context.Cars.FindAsync(id);
-            if(carModel == null)
-            {
-                return NotFound();
-            }
-
-            carModel.RegistrationNumber = car.RegistrationNumber;
-            carModel.MeterStatus = car.MeterStatus;
-            carModel.ProductionYear = car.ProductionYear;
-            carModel.IsActive = car.IsActive;
-            carModel.CarBrandId = car.CarBrandId;
-            carModel.CarModelId = car.CarModelId;
-            carModel.ColorId = car.ColorId;
-
-            try
-            {
+            var findCar = await _context.Cars.FindAsync(id);
+            try{
+                car.ApplyTo(findCar);
                 await _context.SaveChangesAsync();
             }
             catch(DbUpdateConcurrencyException) when (!CarExists(id))
             {
                 return NotFound();
             }
-
-            return Ok(carModel);
-
+            return Ok(findCar);
         }
 
         public bool CarExists(int id)

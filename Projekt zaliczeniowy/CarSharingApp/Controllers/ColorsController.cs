@@ -73,10 +73,6 @@ namespace CarSharingApp.Controllers
             }
 
             var colorModel = _context.Colors.FindAsync(id);
-            if(colorModel == null)
-            {
-                return NotFound();
-            }
 
             try
             {

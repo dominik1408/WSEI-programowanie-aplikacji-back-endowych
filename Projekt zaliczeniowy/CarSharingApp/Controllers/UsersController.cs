@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarSharingApp.Data;
 using CarSharingApp.Models;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace CarSharingApp.Controllers
 {
@@ -50,36 +51,21 @@ namespace CarSharingApp.Controllers
             return user;
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
-        {
-            if (id != user.UserId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
+       //PATCH: api/users/id
+       [HttpPatch("{id}")]
+       public async Task<IActionResult> UpdateUsersPatch(int id, [FromBody] JsonPatchDocument<User> user)
+       {
+            var findUser = await _context.Users.FindAsync(id);
+            try{
+                user.ApplyTo(findUser);
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch(DbUpdateConcurrencyException) when (!UserExists(id))
             {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
-
-            return NoContent();
-        }
+            return Ok(findUser);
+       }
 
         // POST: api/Users
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
