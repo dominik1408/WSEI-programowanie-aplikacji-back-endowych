@@ -28,7 +28,7 @@ namespace CarSharingApp.Controllers
         {
           if (_context.Users == null)
           {
-              return NotFound();
+              return NotFound("Entity Users is null.");
           }
             return await _context.Users.ToListAsync();
         }
@@ -39,16 +39,34 @@ namespace CarSharingApp.Controllers
         {
           if (_context.Users == null)
           {
-              return NotFound();
+              return NotFound("Entity Users is null.");
           }
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User does not exist.");
             }
 
             return user;
+        }
+
+        [HttpGet("roles")]
+        public async Task<ActionResult<IEnumerable<User>>> GetUsersByRole(string role)
+        {
+            if(_context.Users == null)
+            {
+                return NotFound("Entity Users is null.");
+            }
+
+            switch(role)
+            {
+                case "admin":
+                    return await _context.Users.Where(a => a.Roles == Enums.Roles.Admin).ToListAsync();
+                case "user":
+                    return await _context.Users.Where(a => a.Roles == Enums.Roles.User).ToListAsync();
+            }
+            return NotFound("You probably entered the wrong path!");
         }
 
        //PATCH: api/users/id
@@ -62,19 +80,51 @@ namespace CarSharingApp.Controllers
             }
             catch(DbUpdateConcurrencyException) when (!UserExists(id))
             {
-                return NotFound();
+                return NotFound("User does not exist.");
             }
             return Ok(findUser);
        }
 
+        public async Task<IActionResult> UpdateUserPut(User user,int id)
+        {
+            if(id != user.UserId)
+            {
+                return BadRequest();
+            }
+
+            var userModel = await _context.Users.FindAsync(id);
+            if(userModel == null)
+            {
+                return NotFound("User does not exist.");
+            }
+
+            userModel.Name = user.Name;
+            userModel.Surname = user.Surname;
+            userModel.Login = user.Login;
+            userModel.Password = user.Password;
+            userModel.Email = user.Email;
+            userModel.PhoneNumber = user.PhoneNumber;
+            userModel.Roles = user.Roles;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException) when (!UserExists(id))
+            {
+                return NotFound("User does not exist.");
+            }
+
+            return Ok(userModel);
+        }
+
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
           if (_context.Users == null)
           {
-              return Problem("Entity set 'AppDbContext.Users'  is null.");
+              return Problem("Entity Users is null.");
           }
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -88,12 +138,12 @@ namespace CarSharingApp.Controllers
         {
             if (_context.Users == null)
             {
-                return NotFound();
+                return NotFound("Entity Users is null.");
             }
             var user = await _context.Users.FindAsync(id);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User does not exist.");
             }
 
             _context.Users.Remove(user);
