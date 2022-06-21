@@ -18,9 +18,24 @@ namespace CarSharingApp.Controllers
 
         //GET: api/cars
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Car>>> GetCars()
+        public async Task<ActionResult<List<Car>>> GetCars()
         {
-          return await _context.Cars.ToListAsync();
+            var cars = (from c in _context.Cars
+                        join cb in _context.CarBrands on c.CarBrandId equals cb.CarBrandId
+                        join cm in _context.CarModels on c.CarModelId equals cm.CarModelId
+                        join color in _context.Colors on c.ColorId equals color.ColorId
+                        select new 
+                        {
+                            CarId = c.CarId,
+                            RegistrationNumber = c.RegistrationNumber,
+                            MeterStatus = c.MeterStatus,
+                            ProductionYear = c.ProductionYear,
+                            IsActive = c.IsActive,
+                            CarBrand = cb.Name,
+                            CarModel = cm.Name,
+                            Color = color.ColorName
+                        }).ToListAsync();
+            return Json(await cars);
         }
         
         //GET: api/cars/1
@@ -28,13 +43,29 @@ namespace CarSharingApp.Controllers
         public async Task<ActionResult<Car>> GetCarById(int id)
         {
             var car = await _context.Cars.FindAsync(id);
-
             if(car == null)
             {
-                return NotFound("Not found this car");
+                return NotFound($"Car with id {id} does not exist");
             }
 
-            return Ok(car);
+            var carDetails = (from c in _context.Cars
+                        join cb in _context.CarBrands on c.CarBrandId equals cb.CarBrandId
+                        join cm in _context.CarModels on c.CarModelId equals cm.CarModelId
+                        join color in _context.Colors on c.ColorId equals color.ColorId
+                        where car.CarId == c.CarId
+                        select new
+                        {
+                            CarId = c.CarId,
+                            RegistrationNumber = c.RegistrationNumber,
+                            MeterStatus = c.MeterStatus,
+                            ProductionYear = c.ProductionYear,
+                            IsActive = c.IsActive,
+                            CarBrand = cb.Name,
+                            CarModel = cm.Name,
+                            Color = color.ColorName
+                        }).ToListAsync();
+
+            return Json(await carDetails);
         }
 
         [HttpPost]
@@ -89,6 +120,41 @@ namespace CarSharingApp.Controllers
                 return NotFound();
             }
             return Ok(findCar);
+        }
+
+        //PUT: api/cars/id
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCars(Car car, int id)
+        {
+            if(id != car.CarId)
+            {
+                return NotFound();
+            }
+
+            var carModel = await _context.Cars.FindAsync(id);
+            if(carModel == null)
+            {
+                return NotFound("Car does not exist.");
+            }
+
+            carModel.RegistrationNumber = car.RegistrationNumber;
+            carModel.MeterStatus = car.MeterStatus;
+            carModel.ProductionYear = car.ProductionYear;
+            carModel.IsActive = car.IsActive;
+            carModel.CarBrand = car.CarBrand;
+            carModel.CarModel = car.CarModel;
+            carModel.Color = car.Color;
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch(DbUpdateConcurrencyException) when (!CarExists(id))
+            {
+                return NotFound("Car does not exist.");
+            }
+
+            return Ok(carModel);
         }
 
         public bool CarExists(int id)
