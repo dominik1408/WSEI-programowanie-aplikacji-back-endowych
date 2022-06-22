@@ -2,6 +2,7 @@
 using CarSharingApp.Models;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace CarSharingApp.Controllers
 {
@@ -68,6 +69,32 @@ namespace CarSharingApp.Controllers
             return Json(await carDetails);
         }
 
+        [HttpGet("brands")]
+        public async Task<ActionResult<List<Car>>> GetCarsByBrand(string brandName)
+        {
+            var carBrands = (from c in _context.Cars
+                             join cb in _context.CarBrands on c.CarBrandId equals cb.CarBrandId
+                             join cm in _context.CarModels on c.CarModelId equals cm.CarModelId
+                             join color in _context.Colors on c.ColorId equals color.ColorId
+                             where cb.Name.Contains(brandName)
+                             select new
+                             {
+                                 CarId = c.CarId,
+                                 RegistrationNumber = c.RegistrationNumber,
+                                 MeterStatus = c.MeterStatus,
+                                 ProductionYear = c.ProductionYear,
+                                 IsActive = c.IsActive,
+                                 CarBrand = cb.Name,
+                                 CarModel = cm.Name,
+                                 Color = color.ColorName
+                
+                        }).ToListAsync();
+  
+
+                return Json(await carBrands);
+            
+        }
+
         [HttpPost]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
@@ -97,7 +124,7 @@ namespace CarSharingApp.Controllers
 
             if(car == null)
             {
-                return NotFound();
+                return NotFound("Car does not exist.");
             }
 
             _context.Cars.Remove(car);
@@ -117,7 +144,7 @@ namespace CarSharingApp.Controllers
             }
             catch(DbUpdateConcurrencyException) when (!CarExists(id))
             {
-                return NotFound();
+                return NotFound("Car does not exist.");
             }
             return Ok(findCar);
         }
@@ -128,7 +155,7 @@ namespace CarSharingApp.Controllers
         {
             if(id != car.CarId)
             {
-                return NotFound();
+                return BadRequest();
             }
 
             var carModel = await _context.Cars.FindAsync(id);

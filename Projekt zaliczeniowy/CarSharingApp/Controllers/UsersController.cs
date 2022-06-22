@@ -85,6 +85,7 @@ namespace CarSharingApp.Controllers
             return Ok(findUser);
        }
 
+        [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUserPut(User user,int id)
         {
             if(id != user.UserId)
