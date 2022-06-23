@@ -92,7 +92,71 @@ namespace CarSharingApp.Controllers
   
 
                 return Json(await carBrands);
-            
+        }
+
+        [HttpGet("sort")]
+        public async Task <ActionResult<IEnumerable<Car>>> SortCarsByProductionYear(string orderBy)
+        {
+            var car = (from c in _context.Cars
+                       join cb in _context.CarBrands on c.CarBrandId equals cb.CarBrandId
+                       join cm in _context.CarModels on c.CarModelId equals cm.CarModelId
+                       join color in _context.Colors on c.ColorId equals color.ColorId
+                       select new
+                       {
+                           CarId = c.CarId,
+                           RegistrationNumber = c.RegistrationNumber,
+                           MeterStatus = c.MeterStatus,
+                           ProductionYear = c.ProductionYear,
+                           IsActive = c.IsActive,
+                           CarBrand = cb.Name,
+                           CarModel = cm.Name,
+                           Color = color.ColorName
+
+                       });
+            switch(orderBy)
+            {
+                case "productionYearDESC":
+                    return Json(await car.OrderByDescending(a => a.ProductionYear).ToListAsync());
+                case "productionYearASC":
+                    return Json(await car.OrderBy(a => a.ProductionYear).ToListAsync());
+                case "meterStatusDESC":
+                    return Json(await car.OrderByDescending(a => a.MeterStatus).ToListAsync());
+                case "meterStatusASC":
+                    return Json(await car.OrderBy(a => a.MeterStatus).ToListAsync());
+            }
+
+            return Json(await car.ToListAsync());
+        }
+
+        [HttpGet("status")]
+        public async Task<ActionResult<IEnumerable<Car>>> FilterCasrByStatus(string isActive)
+        {
+            var car = (from c in _context.Cars
+                       join cb in _context.CarBrands on c.CarBrandId equals cb.CarBrandId
+                       join cm in _context.CarModels on c.CarModelId equals cm.CarModelId
+                       join color in _context.Colors on c.ColorId equals color.ColorId
+                       select new
+                       {
+                           CarId = c.CarId,
+                           RegistrationNumber = c.RegistrationNumber,
+                           MeterStatus = c.MeterStatus,
+                           ProductionYear = c.ProductionYear,
+                           IsActive = c.IsActive,
+                           CarBrand = cb.Name,
+                           CarModel = cm.Name,
+                           Color = color.ColorName
+
+                       });
+
+            switch (isActive)
+            {
+                case "true":
+                    return Json(await car.Where(a => a.IsActive == true).ToListAsync());
+                case "false":
+                    return Json(await car.Where(a => a.IsActive == false).ToListAsync());
+            }
+
+            return Json(await car.ToListAsync());
         }
 
         [HttpPost]

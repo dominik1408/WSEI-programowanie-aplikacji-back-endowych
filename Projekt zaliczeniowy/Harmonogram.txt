@@ -6,4 +6,10 @@
 6. Utworzenie relacji między modelami w metodzie OnModelCreating w klasie AppDbContext
 7. Migracja modeli do bazy danych
 8. Utworzenie Kontrollerów z metodami GET, POST, PUT, DELETE
-9. Dodanie walidacji dla numeru rejestracyjnego w tabeli Cars - nr rejestracyjny musi być unikatowy 
+9. Dodanie walidacji dla numeru rejestracyjnego dla modelu Cars - nr Rejestracyjny i Stan Licznika, w modelu User dla Loginu i Maila, W modelu CarBrand dla marki samochodu, w CarsColor dla koloru, w CarModel dla modelu samochodu
+10. Dodanie funkjonalności w kontrlerze LoansController, która zmienia status samochodu na zajęty gdy jest ono wypożoczone i na dostępny gdy usuniemy wypożyczenie z tabeli
+11. Utworzenie endpointa zwracającego użytkowników których rola to admin lub użytkowników któych rola to user
+12. Dodanie opcji w Program.cs, która konwertuje Enuma jako string
+13. Dodanie endpointa w CarsController, który wyszukuje samochochody po nazwie
+14. Dodanie enpointa w  CarsController, który sortuje samochody rosnąco lub malejąco po polach rok i status licznika
+15. Dodanie enpointa w  CarsController, któy zwraca wolne lub zajęte samochody
