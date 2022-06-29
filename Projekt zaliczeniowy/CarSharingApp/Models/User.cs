@@ -22,7 +22,7 @@ namespace CarSharingApp.Models
         [Column(TypeName = "varchar(50)")]
         public string Login { get; set; }
         [Required]
-        [Column (TypeName = "varchar(50)")]
+        [Column (TypeName = "varchar(255)")]
         public string Password { get; set; }
         [Required]
         [EmailValidation]

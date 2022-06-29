@@ -45,10 +45,6 @@ namespace CarSharingApp.Data
                 .HasOne(a => a.User)
                 .WithMany(b => b.Loan)
                 .HasForeignKey(a => a.UserId);
-            modelBuilder.Entity<Loan>()
-                .HasOne(a => a.Admin)
-                .WithMany(b => b.Loan)
-                .HasForeignKey(a => a.AdminId);
             modelBuilder.Entity<User>()
                 .HasOne(a => a.Admin)
                 .WithOne(b => b.User)

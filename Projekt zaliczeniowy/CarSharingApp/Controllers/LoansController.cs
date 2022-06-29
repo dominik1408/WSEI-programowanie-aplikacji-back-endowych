@@ -112,7 +112,7 @@ namespace CarSharingApp.Controllers
                 return NotFound();
             }
 
-            _context.Cars.Where(a => a.CarId == loan.CarId).ForEachAsync(a => a.IsActive=true);
+            await _context.Cars.Where(a => a.CarId == loan.CarId).ForEachAsync(a => a.IsActive=true);
             _context.Loans.Remove(loan);
             await _context.SaveChangesAsync();
 

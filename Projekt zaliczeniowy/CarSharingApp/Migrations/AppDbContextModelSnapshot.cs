@@ -141,9 +141,6 @@ namespace CarSharingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanId"), 1L, 1);
 
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
@@ -212,7 +209,7 @@ namespace CarSharingApp.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");

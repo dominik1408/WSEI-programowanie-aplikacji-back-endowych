@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarSharingApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220608175455_EditData")]
-    partial class EditData
+    [Migration("20220629181913_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -143,9 +143,6 @@ namespace CarSharingApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LoanId"), 1L, 1);
 
-                    b.Property<int>("AdminId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CarId")
                         .HasColumnType("int");
 
@@ -214,7 +211,7 @@ namespace CarSharingApp.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
