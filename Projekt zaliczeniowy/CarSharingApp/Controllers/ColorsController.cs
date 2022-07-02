@@ -87,7 +87,7 @@ namespace CarSharingApp.Controllers
 
         }
 
-        public bool ColorExist(int id)
+        private bool ColorExist(int id)
         {
             return _context.Colors.Any(a => a.ColorId == id);
         }

@@ -95,7 +95,7 @@ namespace CarSharingApp.Controllers
             return Ok(carBrandModel);
         }
 
-        public bool CarBrandExist(int id)
+        private bool CarBrandExist(int id)
         {
             return _context.CarBrands.Any(a => a.CarBrandId == id);
         }

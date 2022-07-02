@@ -6,5 +6,6 @@ namespace CarSharingApp.Services
     {
         void Registartion(RegistrationDto dto);
         void RegistrationAdmin(RegistrationAdminDto dto);
+        string GenerateJwt(LoginDto dto);
     }
 }
