@@ -23,12 +23,31 @@ namespace CarSharingApp.Services
                 Surname = dto.Surname,
                 Login = dto.Login,
                 Email = dto.Email,
-                PhoneNumber = dto.PhoneNumber
+                PhoneNumber = dto.PhoneNumber,
+                Roles = Enums.Roles.User,
             };
             var hasshed = _passwordHasher.HashPassword(user, dto.Password);
 
             user.Password = hasshed;
             _context.Add(user);
+            _context.SaveChanges();
+        }
+
+        public void RegistrationAdmin(RegistrationAdminDto dto)
+        {
+            var admin = new User()
+            {
+                Name = dto.Name,
+                Surname = dto.Surname,
+                Login = dto.Login,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                Roles = Enums.Roles.Admin
+            };
+            var hasshed = _passwordHasher.HashPassword(admin, dto.Password);    
+
+            admin.Password = hasshed;
+            _context.Add(admin);
             _context.SaveChanges();
         }
     }

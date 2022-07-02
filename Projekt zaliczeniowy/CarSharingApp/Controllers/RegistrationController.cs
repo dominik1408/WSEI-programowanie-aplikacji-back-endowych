@@ -16,10 +16,17 @@ namespace CarSharingApp.Controllers
             _service = service;
         }
 
-        [HttpPost("registration")]
-        public async Task<ActionResult> Register([FromBody] RegistrationDto dto)
+        [HttpPost("user")]
+        public ActionResult Register([FromBody] RegistrationDto dto)
         {
             _service.Registartion(dto);
+            return Ok();
+        }
+
+        [HttpPost("admin")]
+        public ActionResult RegisterAdmin([FromBody] RegistrationAdminDto dto)
+        {
+            _service.RegistrationAdmin(dto);
             return Ok();
         }
     }
