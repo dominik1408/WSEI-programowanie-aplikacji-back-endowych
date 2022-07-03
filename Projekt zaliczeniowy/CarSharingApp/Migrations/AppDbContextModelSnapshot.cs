@@ -38,7 +38,7 @@ namespace CarSharingApp.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.Car", b =>
@@ -79,7 +79,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasIndex("ColorId");
 
-                    b.ToTable("Cars");
+                    b.ToTable("Cars", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.CarBrand", b =>
@@ -96,7 +96,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasKey("CarBrandId");
 
-                    b.ToTable("CarBrands");
+                    b.ToTable("CarBrands", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.CarModel", b =>
@@ -113,7 +113,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasKey("CarModelId");
 
-                    b.ToTable("CarModels");
+                    b.ToTable("CarModels", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.Color", b =>
@@ -130,7 +130,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasKey("ColorId");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Colors", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.Loan", b =>
@@ -164,7 +164,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Loans");
+                    b.ToTable("Loans", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.LoanType", b =>
@@ -184,7 +184,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasKey("LoanTypeId");
 
-                    b.ToTable("LoanTypes");
+                    b.ToTable("LoanTypes", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.User", b =>
@@ -225,7 +225,7 @@ namespace CarSharingApp.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CarSharingApp.Models.Admin", b =>

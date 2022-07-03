@@ -36,9 +36,5 @@ namespace CarSharingApp.Models
         [JsonIgnore]
         [IgnoreDataMember]
         public ICollection<Loan>? Loan { get; set; }
-        [JsonIgnore]
-        [IgnoreDataMember]
-        public Admin? Admin { get; set; }
-
     }
 }

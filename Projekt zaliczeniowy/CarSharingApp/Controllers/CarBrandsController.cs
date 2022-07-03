@@ -1,4 +1,5 @@
 ﻿using CarSharingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +17,15 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<CarBrand>>> GetCarBrand()
         {
             return await _context.CarBrands.ToListAsync();
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "User")]
+        [Authorize(Roles = "Roles")]
         public async Task<ActionResult<CarBrand>> GetCarBrands(int id)
         {
             var carBrand = await _context.CarBrands.FindAsync(id);
