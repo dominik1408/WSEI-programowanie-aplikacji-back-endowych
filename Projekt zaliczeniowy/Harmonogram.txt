@@ -13,3 +13,5 @@
 13. Dodanie endpointa w CarsController, który wyszukuje samochochody po nazwie
 14. Dodanie enpointa w  CarsController, który sortuje samochody rosnąco lub malejąco po polach rok i status licznika
 15. Dodanie enpointa w  CarsController, któy zwraca wolne lub zajęte samochody
+16. Dodanie Serwisu i Kontrolera do logowania i autoryzacji poprzez JWT
+17. Utworzenie skryptu budującego kontenery aplikacj
