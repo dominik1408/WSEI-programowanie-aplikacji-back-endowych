@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CarSharingApp.Data;
 using CarSharingApp.Models;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarSharingApp.Controllers
 {
@@ -24,6 +25,7 @@ namespace CarSharingApp.Controllers
 
         // GET: api/Users
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
           if (_context.Users == null)
@@ -35,6 +37,7 @@ namespace CarSharingApp.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
           if (_context.Users == null)
@@ -52,6 +55,7 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpGet("roles")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<User>>> GetUsersByRole(string role)
         {
             if(_context.Users == null)
@@ -71,7 +75,8 @@ namespace CarSharingApp.Controllers
 
        //PATCH: api/users/id
        [HttpPatch("{id}")]
-       public async Task<IActionResult> UpdateUsersPatch(int id, [FromBody] JsonPatchDocument<User> user)
+       [Authorize(Roles = "Admin, User")]
+        public async Task<IActionResult> UpdateUsersPatch(int id, [FromBody] JsonPatchDocument<User> user)
        {
             var findUser = await _context.Users.FindAsync(id);
             try{
@@ -86,6 +91,7 @@ namespace CarSharingApp.Controllers
        }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> UpdateUserPut(User user,int id)
         {
             if(id != user.UserId)
@@ -118,23 +124,9 @@ namespace CarSharingApp.Controllers
 
             return Ok(userModel);
         }
-
-        // POST: api/Users
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
-        {
-          if (_context.Users == null)
-          {
-              return Problem("Entity Users is null.");
-          }
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetUser", new { id = user.UserId }, user);
-        }
-
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             if (_context.Users == null)

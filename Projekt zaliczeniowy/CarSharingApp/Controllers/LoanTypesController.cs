@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarSharingApp.Data;
 using CarSharingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarSharingApp.Controllers
 {
@@ -23,6 +24,7 @@ namespace CarSharingApp.Controllers
 
         // GET: api/LoanTypes
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<LoanType>>> GetLoanTypes()
         {
           if (_context.LoanTypes == null)
@@ -34,6 +36,7 @@ namespace CarSharingApp.Controllers
 
         // GET: api/LoanTypes/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<LoanType>> GetLoanType(int id)
         {
           if (_context.LoanTypes == null)
@@ -53,6 +56,7 @@ namespace CarSharingApp.Controllers
         // PUT: api/LoanTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutLoanType(int id, LoanType loanType)
         {
             if (id != loanType.LoanTypeId)
@@ -84,6 +88,7 @@ namespace CarSharingApp.Controllers
         // POST: api/LoanTypes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<LoanType>> PostLoanType(LoanType loanType)
         {
           if (_context.LoanTypes == null)
@@ -98,6 +103,7 @@ namespace CarSharingApp.Controllers
 
         // DELETE: api/LoanTypes/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteLoanType(int id)
         {
             if (_context.LoanTypes == null)

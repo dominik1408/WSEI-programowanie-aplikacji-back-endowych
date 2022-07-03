@@ -1,5 +1,6 @@
 ﻿
 using CarSharingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace CarSharingApp.Controllers
 
         //GET: api/cars
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Car>>> GetCars()
         {
             var cars = (from c in _context.Cars
@@ -41,6 +43,7 @@ namespace CarSharingApp.Controllers
         
         //GET: api/cars/1
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Car>> GetCarById(int id)
         {
             var car = await _context.Cars.FindAsync(id);
@@ -70,6 +73,7 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpGet("brands")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Car>>> GetCarsByBrand(string brandName)
         {
             var carBrands = (from c in _context.Cars
@@ -95,6 +99,7 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpGet("sort")]
+        [AllowAnonymous]
         public async Task <ActionResult<IEnumerable<Car>>> SortCarsByProductionYear(string orderBy)
         {
             var car = (from c in _context.Cars
@@ -129,6 +134,7 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpGet("status")]
+        [AllowAnonymous]
         public async Task<ActionResult<IEnumerable<Car>>> FilterCasrByStatus(string isActive)
         {
             var car = (from c in _context.Cars
@@ -160,6 +166,7 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Car>> PostCar(Car car)
         {
             var carModel = new Car
@@ -182,6 +189,7 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCar(int id)
         {
             var car = await _context.Cars.FindAsync(id);
@@ -199,6 +207,7 @@ namespace CarSharingApp.Controllers
         
         //PATCH: api/cars/id
         [HttpPatch("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCarsPatch(int id, [FromBody] JsonPatchDocument<Car> car)
         {
             var findCar = await _context.Cars.FindAsync(id);
@@ -215,6 +224,7 @@ namespace CarSharingApp.Controllers
 
         //PUT: api/cars/id
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutCars(Car car, int id)
         {
             if(id != car.CarId)

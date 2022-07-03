@@ -7,6 +7,7 @@ namespace CarSharingApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class CarBrandsController : ControllerBase
     {
         private readonly AppDbContext _context;
@@ -24,8 +25,6 @@ namespace CarSharingApp.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "User")]
-        [Authorize(Roles = "Roles")]
         public async Task<ActionResult<CarBrand>> GetCarBrands(int id)
         {
             var carBrand = await _context.CarBrands.FindAsync(id);

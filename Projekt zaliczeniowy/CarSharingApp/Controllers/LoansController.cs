@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CarSharingApp.Data;
 using CarSharingApp.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarSharingApp.Controllers
 {
@@ -23,6 +24,7 @@ namespace CarSharingApp.Controllers
 
         // GET: api/Loans
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Loan>>> GetLoans()
         {
           if (_context.Loans == null)
