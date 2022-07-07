@@ -1,0 +1,10 @@
+version: '3.4'
+
+services:
+  carsharingapp:
+    image: ${DOCKER_REGISTRY-}carsharingapp
+    build:
+      context: .
+      dockerfile: CarSharingApp/Dockerfile
+  db:
+   image: "mcr.microsoft.com/mssql/server:2019-latest"

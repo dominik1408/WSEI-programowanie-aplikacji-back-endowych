@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  carsharingapp:
+    container_name: backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+  db:
+     container_name: carsdb
+     environment:
+        SA_PASSWORD: "CarSharingApp@"
+        ACCEPT_EULA: "Y"
+     restart: always
+     ports:
+        - "1433:1433"
+        
