@@ -36,6 +36,7 @@ namespace CarSharingApp.Controllers
 
         // GET: api/Loans/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Loan>> GetLoan(int id)
         {
           if (_context.Loans == null)
@@ -55,6 +56,7 @@ namespace CarSharingApp.Controllers
         // PUT: api/Loans/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutLoan(int id, Loan loan)
         {
             if (id != loan.LoanId)
@@ -86,13 +88,14 @@ namespace CarSharingApp.Controllers
         // POST: api/Loans
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+        [Authorize(Roles = "Admin, User")]
         public async Task<ActionResult<Loan>> PostLoan(Loan loan)
         {
             if (_context.Loans == null)
             {
                 return Problem("Entity set 'AppDbContext.Loans'  is null.");
             }
-  
+
             _context.Loans.Add(loan);
             await _context.Cars.Where(a => a.CarId == loan.CarId).ForEachAsync(a => a.IsActive = false);
             await _context.SaveChangesAsync();
@@ -102,6 +105,7 @@ namespace CarSharingApp.Controllers
 
         // DELETE: api/Loans/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin, User")]
         public async Task<IActionResult> DeleteLoan(int id)
         {
             if (_context.Loans == null)
